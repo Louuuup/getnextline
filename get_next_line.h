@@ -6,7 +6,7 @@
 /*   By: ycyr-roy <ycyr-roy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:54:16 by ycyr-roy          #+#    #+#             */
-/*   Updated: 2023/05/09 13:56:52 by ycyr-roy         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:04:55 by ycyr-roy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct datas
 	char	buffer[BUFFER_SIZE];
 }			t_data;
 
-char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strjoin(t_data *data);
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	*ft_bzero(void *s, size_t n);

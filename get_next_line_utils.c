@@ -6,7 +6,7 @@
 /*   By: ycyr-roy <ycyr-roy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:35:57 by ycyr-roy          #+#    #+#             */
-/*   Updated: 2023/05/09 15:31:49 by ycyr-roy         ###   ########.fr       */
+/*   Updated: 2023/05/09 16:14:26 by ycyr-roy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,33 +68,33 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 	return (dst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+// data.stash = s1
+// data.buffer = s2
+int	ft_strjoin(t_data *data)
 {
 	char	*str_a;
 	char	*str_b;
-	size_t	size;
-	size_t	s1_size;
-	size_t	s2_size;
+	size_t	size[3];
 
-	s1_size = ft_strlen(s1);
-	s2_size = ft_strlen(s2);
-	size = s1_size + s2_size + 1;
-	if (!s1 || !s2)
+	size[1] = ft_strlen(data->stash);
+	size[2] = ft_strlen(data->buffer);
+	size[0] = size[1] + size[2] + 1;
+	if (size[1] == 1 && data->stash[0] == '\0')
+	{
+		data->stash = data->buffer;
 		return (0);
-	if (size <= 0)
-		return (0);
-	if (s1_size == 1 && s1[0] == '\0')
-		return ((char *)s2);
-	str_a = ft_calloc(size + 1, sizeof(char));
+	}
+	str_a = ft_calloc(size[0] + 1, sizeof(char));
 	if (!str_a)
-		return (NULL);
-	str_b = str_a + s1_size;
-	ft_memcpy(str_a, s1, s1_size);
-	ft_memcpy(str_b, s2, s2_size);
-	printf("sa: %s\n", str_a);
-	printf("sb: %s\n", str_b);
-	// free((void *)s1);
-	return (str_a);
+		return (-1);
+	str_b = str_a + size[1];
+	ft_memcpy(str_a, data->stash, size[1]);
+	ft_memcpy(str_b, data->buffer, size[2]);
+	// printf("sa: %s\n", str_a);
+	// printf("sb: %s\n", str_b);
+	free((void *)data->stash);
+	data->stash = str_a;
+	return (0);
 }
 
 // char	*ft_strjoin(char const *s1, char const *s2)
