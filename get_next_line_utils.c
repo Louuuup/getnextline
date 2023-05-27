@@ -6,7 +6,7 @@
 /*   By: ycyr-roy <ycyr-roy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:35:57 by ycyr-roy          #+#    #+#             */
-/*   Updated: 2023/05/09 16:14:26 by ycyr-roy         ###   ########.fr       */
+/*   Updated: 2023/05/26 18:14:20 by ycyr-roy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,55 +49,53 @@ int	ft_strlen(const char *s)
 	return (x);
 }
 
-void	*ft_memcpy(void *dst, const void *src, size_t n)
+size_t	ft_strlcpy(char *dst, char *src, size_t dstsize)
 {
-	size_t			i;
-	unsigned char	*x;
-	unsigned char	*y;
+	unsigned int	i;
 
-	if (!dst || !src)
-		return (dst);
 	i = 0;
-	x = (unsigned char *)dst;
-	y = (unsigned char *)src;
-	while (i < n)
-	{
-		x[i] = y[i];
-		i++;
-	}
-	return (dst);
-}
-
-// data.stash = s1
-// data.buffer = s2
-int	ft_strjoin(t_data *data)
-{
-	char	*str_a;
-	char	*str_b;
-	size_t	size[3];
-
-	size[1] = ft_strlen(data->stash);
-	size[2] = ft_strlen(data->buffer);
-	size[0] = size[1] + size[2] + 1;
-	if (size[1] == 1 && data->stash[0] == '\0')
-	{
-		data->stash = data->buffer;
+	if (!dst || !src)
 		return (0);
+	if (dstsize != 0)
+	{
+		ft_bzero(dst, dstsize);
+		while (src[i] != '\0' && i < dstsize - 1)
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
 	}
-	str_a = ft_calloc(size[0] + 1, sizeof(char));
-	if (!str_a)
-		return (-1);
-	str_b = str_a + size[1];
-	ft_memcpy(str_a, data->stash, size[1]);
-	ft_memcpy(str_b, data->buffer, size[2]);
-	// printf("sa: %s\n", str_a);
-	// printf("sb: %s\n", str_b);
-	free((void *)data->stash);
-	data->stash = str_a;
-	return (0);
+	while (src[i] != '\0')
+		i++;
+	return (i);
 }
+size_t	ft_strlcat(char *dst, char *src, size_t dstsize)
+{
+	size_t	i;
+	size_t	j;
+	size_t	slength;
+	size_t	dlength;
 
-// char	*ft_strjoin(char const *s1, char const *s2)
-// {
-	
-// }
+	dlength = 0;
+	i = 0;
+	j = 0;
+	if (dst == NULL && dstsize == 0)
+		return (ft_strlen(src));
+	while (dst[j])
+		j++;
+	dlength = j;
+	slength = ft_strlen(src);
+	if (dstsize == 0 || dstsize < dlength)
+		return (slength + dstsize);
+	while (src[i] != '\0' && j < dstsize - 1)
+	{
+		dst[j] = src[i];
+		i++;
+		j++;
+	}
+	dst[j] = '\0';
+	if (src[i] == '\0')	//TEST
+		ft_bzero(src, slength);
+	return (dlength + slength);
+}
