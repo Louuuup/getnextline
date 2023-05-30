@@ -29,11 +29,11 @@ int	has_nl(char *str)
 	}
 	return (-1);
 }
-`
+
 int	append_to_stash(t_data *data)
 {
 	data->proxy = data->stash;
-	data->stash = calloc(data->stash_size + 1, sizeof(char));
+	data->stash = ft_calloc(data->stash_size + 1, sizeof(char));
 	if (!data->stash)
 		return (ERROR);
 	ft_strlcpy(data->stash, data->proxy, data->stash_size + 1);
@@ -48,7 +48,7 @@ int parsing_without_nl(t_data *data)
 		data->error += append_to_stash(data);
 	else
 	{
-		data->stash = calloc(BUFFER_SIZE + 1, sizeof(char));
+		data->stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (!data->stash)
 			return (ERROR);
 		ft_strlcpy(data->stash, data->buffer, BUFFER_SIZE + 1);

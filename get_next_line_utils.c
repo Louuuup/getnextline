@@ -12,22 +12,16 @@
 
 #include "get_next_line.h"
 
-void	*ft_bzero(void *s, size_t n)
+void	ft_bzero(void *s, size_t n)
 {
-	unsigned char	*cp;
-
-	cp = (unsigned char *)s;
 	while (n--)
-	{
-		*cp++ = 0;
-	}
-	return (s);
+		((unsigned char *)s)[n] = 0;
 }
 
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*str;
-
+	
 	str = malloc(count * size);
 	if (!str)
 		return (NULL);
