@@ -11,22 +11,34 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 void	ft_bzero(void *s, size_t n)
 {
 	while (n--)
-		((unsigned char *)s)[n] = 0;
+		((char *)s)[n] = 0;
 }
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*str;
+    size_t	total_size;
+    void* 	ptr;
+    size_t	i;
 	
-	str = malloc(count * size);
-	if (!str)
+    total_size = count * size;
+	if (total_size <= 0)
 		return (NULL);
-	ft_bzero(str, count * size);
-	return (str);
+    ptr = malloc(total_size);
+    if (ptr != NULL)
+    {
+        i = 0;
+        while (i < total_size)
+        {
+            ((char*)ptr)[i] = 0;
+            i++;
+        }
+    }
+    return (ptr);
 }
 
 int	ft_strlen(const char *s)

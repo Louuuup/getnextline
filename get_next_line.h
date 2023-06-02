@@ -35,10 +35,10 @@ typedef struct datas
 {
 	char	*stash;
 	char	buffer[BUFFER_SIZE + 1];
-	char	b_proxy[BUFFER_SIZE + 1];
-	char 	*proxy;
+	char	b_pxy[BUFFER_SIZE + 1];
+	char	*proxy;
 	int		rd_out;
-	int		nl_byte;
+	int		nl_idx;
 	int		stash_size;
 	int		error;
 }			t_data;
@@ -51,6 +51,6 @@ void	ft_bzero(void *s, size_t n);
 size_t	ft_strlcpy(char *dst, char *src, size_t dstsize);
 size_t	ft_strlcat(char *dst, char *src, size_t dstsize);
 int		ft_strlen(const char *s);
-int	append_to_stash(t_data *data);
+int		append_to_stash(t_data *data);
 
 #endif

@@ -35,13 +35,17 @@ int	append_to_stash(t_data *data)
 	data->proxy = data->stash;
 	data->stash = ft_calloc(data->stash_size + 1, sizeof(char));
 	if (!data->stash)
+	{
+		free(data->proxy);
 		return (ERROR);
+	}
 	ft_strlcpy(data->stash, data->proxy, data->stash_size + 1);
-	ft_strlcat(data->stash, data->buffer, data->stash_size + 1); 
+	ft_strlcat(data->stash, data->buffer, data->stash_size + 1);
 	free(data->proxy);
 	return (NO_ERROR);
 }
-int parsing_without_nl(t_data *data)
+
+int	parsing_without_nl(t_data *data)
 {
 	data->stash_size += ft_strlen(data->buffer);
 	if (data->stash)
@@ -49,6 +53,7 @@ int parsing_without_nl(t_data *data)
 	else
 	{
 		data->stash = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		printf("adress %p/n", data->stash);
 		if (!data->stash)
 			return (ERROR);
 		ft_strlcpy(data->stash, data->buffer, BUFFER_SIZE + 1);
@@ -58,44 +63,45 @@ int parsing_without_nl(t_data *data)
 	return (NO_ERROR);
 }
 
-int parsing_with_nl(t_data *data)
+int	parsing_with_nl(t_data *data)
 {
-	data->stash_size += data->nl_byte;
+	data->stash_size += data->nl_idx;
 	if (data->stash)
-		append_to_stash(data);
+		append_to_stash(data);//check if error
 	else
 	{
-		data->stash = ft_calloc(data->nl_byte + 1, sizeof(char));
-		
-if (!data->stash)
+		data->stash = ft_calloc(data->nl_idx + 1, sizeof(char));
+		if (!data->stash)
 			return (ERROR);
-		ft_strlcpy(data->stash, data->buffer, data->nl_byte + 1);
+		ft_strlcpy(data->stash, data->buffer, data->nl_idx + 1);
 	}
-	ft_strlcpy(data->b_proxy, data->buffer, BUFFER_SIZE + 1);
-	ft_strlcpy(data->buffer, data->b_proxy + data->nl_byte, BUFFER_SIZE - data->nl_byte + 1);
+	ft_strlcpy(data->b_pxy, data->buffer, BUFFER_SIZE + 1);
+	ft_strlcpy(data->buffer, data->b_pxy
+	+ data->nl_idx, BUFFER_SIZE - data->nl_idx + 1);
 	return (NO_ERROR);
 }
-
 
 char	*get_next_line(int fd)
 {
 	static t_data	data;
-
 	if (fd < 0)
 		return (NULL);
 	data.stash_size = 0;
-	data.nl_byte = -1;
+	data.nl_idx = -1;
 	data.rd_out = 1;
-	data.stash = 0;
+	data.stash = NULL;
 	data.error = 0;
-	while(data.rd_out && data.nl_byte == -1)
+	while (data.rd_out && data.nl_idx == -1)
 	{
 		if (data.buffer[0] == '\0')
 			data.rd_out = read(fd, data.buffer, BUFFER_SIZE);
 		if (data.rd_out == -1)
+		{
+			free(data.stash);
 			return (NULL);
-		data.nl_byte = has_nl(data.buffer);
-		if (data.nl_byte != -1)
+		}
+		data.nl_idx = has_nl(data.buffer);
+		if (data.nl_idx != -1)
 			data.error += parsing_with_nl(&data);
 		else
 			data.error += parsing_without_nl(&data);
