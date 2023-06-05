@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycyr-roy <ycyr-roy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 13:54:16 by ycyr-roy          #+#    #+#             */
-/*   Updated: 2023/06/02 11:15:00 by ycyr-roy         ###   ########.fr       */
+/*   Updated: 2023/06/05 13:55:17 by ycyr-roy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <limits.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -31,10 +32,11 @@
 // stash_size: Total lengh of actual stash string.
 // nl_byte: position of '\n' in Buffer.
 // error: 0 if no error, other if something went wrong
-typedef struct datas
+typedef struct data
 {
+	int		fd;
 	char	*stash;
-	char	buffer[BUFFER_SIZE + 1];
+	char	buffer[OPEN_MAX][BUFFER_SIZE + 1];
 	char	b_pxy[BUFFER_SIZE + 1];
 	char	*proxy;
 	int		rd_out;
@@ -44,7 +46,6 @@ typedef struct datas
 }			t_data;
 
 char	*get_next_line(int fd);
-
 void	*ft_calloc(size_t count, size_t size);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 void	ft_bzero(void *s, size_t n);
